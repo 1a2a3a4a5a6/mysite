@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title></title>
+</head>
+<body>
+
+{% if user.is_authenticated %}
+{% block content %}
+Добро пожаловать, . <a href="/logout">Выйти из аккаунта</a>
+<p id = "hook-text">попаданий хуком: 0</p>
+
+<input type='button' value='потрениться на пудге' onClick="hookEnemy()">
+<input type='button' value='посмотреть реплей денди' onClick="hookUpgrade()">
+<input class="upgrade" type="button" value='купить дк хук' onClick="buyAutoHook()">
+<input class="upgrade" type="button" value='купить сет денди' onClick="buyDendiSet()">
+
+<p id='replayPriceText'></p>
+<p id='autoHookAmount'></p>
+<p id='dendiSetAmount'></p>
+
+<p id='hooksPerClickAmount'>попаданий за нажатие: 1</p>
+<p id='hooksPerSecondAmount'>попаданий в секунду: 0</p>
+
+<script type="text/javascript">
+  var hooks = 0;
+  var hooksPerClick = 1;
+  var hooksPerSecond = 0;
+  var replayPrice = 50;
+  var dragonclawHookPrice = 250;
+  var dendiSetPrice = 500;
+  const fps = 15;
+
+
+  function hookEnemy() {
+    hooks += hooksPerClick;
+    document.getElementById('hook-text').innerHTML = "попаданий хуком: " + Math.round(hooks); 
+  }
+
+  function hookUpgrade() {
+
+    if (hooks >= replayPrice)
+    {
+    hooksPerClick +=1;
+    hooks -= replayPrice;
+    replayPrice = Math.round(replayPrice *1.1);
+        document.getElementById('hook-text').innerHTML = "попаданий хуком: " + Math.round(hooks); 
+        document.getElementById('replayPriceText').innerHTML = "цена реплея: " + replayPrice; 
+        document.getElementById('hooksPerClickAmount').innerHTML = "попаданий за нажатие: " + hooksPerClick;
+    }
+    else alert ('еще рано смотреть реплеи, надо трениться')
+  }
+
+function buyAutoHook()
+{
+  if (hooks >=dragonclawHookPrice)
+  {
+    hooks -= dragonclawHookPrice;
+    hooksPerSecond +=1;
+    document.getElementById('hook-text').innerHTML = "попаданий хуком: " + Math.round(hooks); 
+    document.getElementById('autoHookAmount').innerHTML = "дк хуков в инвентаре: " + hooksPerSecond; 
+    document.getElementById('hooksPerSecondAmount').innerHTML = "попаданий в секунду: " + hooksPerSecond;
+  }
+  else alert ('еще рано закупаться шмотками, надо трениться')
+}
+
+setInterval(function() {
+hooks += hooksPerSecond/fps;
+document.getElementById('hook-text').innerHTML = "попаданий хуком: " + Math.round(hooks); 
+},1000/fps)
+
+function buyDendiSet() {
+  if (hooks >= dendiSetPrice)
+  {
+    hooks -= dendiSetPrice;
+    hooksPerClick +=10;
+    dendiSetPrice = Math.round(dendiSetPrice *1.2)
+        document.getElementById('hook-text').innerHTML = "попаданий хуком: " + Math.round(hooks); 
+        document.getElementById('dendiSetAmount').innerHTML = "цена сета денди: " + dendiSetPrice; 
+        document.getElementById('hooksPerClickAmount').innerHTML = "попаданий за нажатие: " + hooksPerClick;
+  }
+  else alert ('еще рано закупаться шмотками, надо трениться')
+}
+
+
+</script>
+{% endblock %}
+{% else %}
+<p>Для доступа к кликеру нужно <a href="/login">залогиниться</a></p>
+{% endif %}
+
+</body>
+</html>

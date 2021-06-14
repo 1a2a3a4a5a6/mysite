@@ -1,0 +1,11 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+<h1>Django Clicker</h1>
+{% if user.is_authenticated %}
+<p>Добро пожаловать, сыграть в <a href="/clicker">кликер</a> можно по <a href="/clicker">ссылке</a>.</p>
+{% else %}
+<p>Для доступа к <a href="/clicker">кликеру</a> нужно <a href="/login">залогиниться</a>.</p>
+<p>Если вы здесь впервые, зарегистрировать аккаунт можно <a href = "/register"> здесь</a>.</p>
+{% endif %}
+{% endblock %}
